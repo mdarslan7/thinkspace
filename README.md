@@ -79,4 +79,4 @@ We welcome minimalist-minded contributors! Please see [`CONTRIBUTING.md`](./CONT
 
 ---
 
-**→ Find your calm. Return to your thoughts. Stay grounded with Thinkspace.**
+**Find your calm. Return to your thoughts. Stay grounded with Thinkspace.**
