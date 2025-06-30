@@ -9,8 +9,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
-        "icon-192.png",
-        "icon-512.png",
+        "icon-192-192.jpg",
+        "icon-512-512.jpg",
+        "icon-512x512.png",
         "ss-wide.png",
         "ss-narrow.png",
       ],
@@ -26,27 +27,27 @@ export default defineConfig({
         orientation: "portrait-primary",
         icons: [
           {
-            src: "icon-192.png",
+            src: "/icon-192-192.jpg",
             sizes: "192x192",
-            type: "image/png",
+            type: "image/jpeg",
             purpose: "any",
           },
           {
-            src: "icon-192.png",
+            src: "/icon-192-192.jpg",
             sizes: "192x192",
-            type: "image/png",
+            type: "image/jpeg",
             purpose: "maskable",
           },
           {
-            src: "icon-512.png",
+            src: "/icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any",
           },
           {
-            src: "icon-512.png",
+            src: "/icon-512-512.jpg",
             sizes: "512x512",
-            type: "image/png",
+            type: "image/jpeg",
             purpose: "maskable",
           },
         ],
