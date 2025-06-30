@@ -44,7 +44,7 @@ Built to be clean, quiet, and useful, Thinkspace helps you save thoughts that ma
 
 ## 📦 How to Use
 
-1. Open [Thinkspace](thinkspace-blond.vercel.app/)
+1. Open Thinkspace
 2. Start writing. No login needed
 3. Tap “Add to Home Screen” or install via browser
 4. Use it anytime, even offline
