@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { HomePage } from './components/HomePage';
-import { WritingScreen } from './components/WritingScreen';
-import { JournalEntry } from './types/journal';
-import { loadEntries, saveEntries } from './utils/storage';
+import { useState, useEffect } from "react";
+import { HomePage } from "./components/HomePage";
+import { WritingScreen } from "./components/WritingScreen";
+import { JournalEntry } from "./types/journal";
+import { loadEntries, saveEntries, deleteEntry } from "./utils/storage";
 
-type Screen = 'home' | 'writing';
+type Screen = "home" | "writing";
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
+  const [currentScreen, setCurrentScreen] = useState<Screen>("home");
   const [entries, setEntries] = useState<JournalEntry[]>([]);
 
   // Load entries on app start
@@ -21,7 +21,7 @@ function App() {
       id: Date.now().toString(),
       content,
       date: new Date(),
-      prompt
+      prompt,
     };
 
     const updatedEntries = [newEntry, ...entries];
@@ -29,23 +29,29 @@ function App() {
     saveEntries(updatedEntries);
   };
 
+  const handleDeleteEntry = (entryId: string) => {
+    const updatedEntries = deleteEntry(entryId, entries);
+    setEntries(updatedEntries);
+  };
+
   const handleStartWriting = () => {
-    setCurrentScreen('writing');
+    setCurrentScreen("writing");
   };
 
   const handleBackToHome = () => {
-    setCurrentScreen('home');
+    setCurrentScreen("home");
   };
 
   return (
     <>
-      {currentScreen === 'home' && (
+      {currentScreen === "home" && (
         <HomePage onStartWriting={handleStartWriting} />
       )}
-      {currentScreen === 'writing' && (
+      {currentScreen === "writing" && (
         <WritingScreen
           entries={entries}
           onSaveEntry={handleSaveEntry}
+          onDeleteEntry={handleDeleteEntry}
           onBack={handleBackToHome}
         />
       )}

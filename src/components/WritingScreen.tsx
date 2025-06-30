@@ -1,23 +1,30 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Save } from 'lucide-react';
-import { JournalEntry } from '../types/journal';
-import { getTodaysPrompt } from '../utils/prompts';
-import { saveCurrentEntry, loadCurrentEntry, clearCurrentEntry } from '../utils/storage';
-import { EntryList } from './EntryList';
-import { ThemeToggle } from './ThemeToggle';
+import React, { useState, useEffect, useCallback } from "react";
+import { ArrowLeft, Save } from "lucide-react";
+import { JournalEntry } from "../types/journal";
+import { getTodaysPrompt } from "../utils/prompts";
+import {
+  saveCurrentEntry,
+  loadCurrentEntry,
+  clearCurrentEntry,
+} from "../utils/storage";
+import { EntryList } from "./EntryList";
+// import { StorageInfo } from "./StorageInfo";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface WritingScreenProps {
   entries: JournalEntry[];
   onSaveEntry: (content: string, prompt?: string) => void;
+  onDeleteEntry: (entryId: string) => void;
   onBack: () => void;
 }
 
 export const WritingScreen: React.FC<WritingScreenProps> = ({
   entries,
   onSaveEntry,
-  onBack
+  onDeleteEntry,
+  onBack,
 }) => {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const todaysPrompt = getTodaysPrompt();
 
@@ -40,24 +47,24 @@ export const WritingScreen: React.FC<WritingScreenProps> = ({
     if (!content.trim()) return;
 
     setIsSaving(true);
-    
+
     try {
       onSaveEntry(content.trim(), todaysPrompt.text);
-      setContent('');
+      setContent("");
       clearCurrentEntry();
-      
+
       // Brief delay to show save feedback
       setTimeout(() => {
         setIsSaving(false);
       }, 1000);
     } catch (error) {
-      console.error('Failed to save entry:', error);
+      console.error("Failed to save entry:", error);
       setIsSaving(false);
     }
   }, [content, onSaveEntry, todaysPrompt.text]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
+    if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       handleSave();
     }
@@ -75,19 +82,19 @@ export const WritingScreen: React.FC<WritingScreenProps> = ({
             <ArrowLeft className="w-4 h-4" />
             Back
           </button>
-          
+
           <div className="flex items-center gap-3">
             <button
               onClick={handleSave}
               disabled={!content.trim() || isSaving}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 focus-ring ${
                 content.trim() && !isSaving
-                  ? 'bg-sage-600 hover:bg-sage-700 text-white shadow-sm hover:shadow-md'
-                  : 'bg-stone-200 dark:bg-stone-700 text-stone-400 dark:text-stone-500 cursor-not-allowed'
+                  ? "bg-sage-600 hover:bg-sage-700 text-white shadow-sm hover:shadow-md"
+                  : "bg-stone-200 dark:bg-stone-700 text-stone-400 dark:text-stone-500 cursor-not-allowed"
               }`}
             >
               <Save className="w-4 h-4" />
-              {isSaving ? 'Saved!' : 'Save Entry'}
+              {isSaving ? "Saved!" : "Save Entry"}
             </button>
             <ThemeToggle />
           </div>
@@ -113,11 +120,17 @@ export const WritingScreen: React.FC<WritingScreenProps> = ({
             className="textarea-main"
             autoFocus
           />
-          
+
           {/* Word count and tips */}
           <div className="flex justify-between items-center mt-3 text-sm text-stone-500 dark:text-stone-400">
             <span>
-              {content.trim().split(/\s+/).filter(word => word.length > 0).length} words
+              {
+                content
+                  .trim()
+                  .split(/\s+/)
+                  .filter((word) => word.length > 0).length
+              }{" "}
+              words
             </span>
             <span className="hidden sm:block">
               Tip: Press Cmd/Ctrl + S to save
@@ -126,7 +139,10 @@ export const WritingScreen: React.FC<WritingScreenProps> = ({
         </div>
 
         {/* Past Entries */}
-        <EntryList entries={entries} />
+        <EntryList entries={entries} onDeleteEntry={onDeleteEntry} />
+
+        {/* Storage Information */}
+        {/* <StorageInfo /> */}
       </div>
     </div>
   );

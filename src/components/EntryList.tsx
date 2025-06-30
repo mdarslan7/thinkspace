@@ -1,12 +1,16 @@
-import React from 'react';
-import { JournalEntry } from '../types/journal';
-import { EntryItem } from './EntryItem';
+import React from "react";
+import { JournalEntry } from "../types/journal";
+import { EntryItem } from "./EntryItem";
 
 interface EntryListProps {
   entries: JournalEntry[];
+  onDeleteEntry: (entryId: string) => void;
 }
 
-export const EntryList: React.FC<EntryListProps> = ({ entries }) => {
+export const EntryList: React.FC<EntryListProps> = ({
+  entries,
+  onDeleteEntry,
+}) => {
   if (entries.length === 0) {
     return (
       <div className="text-center py-12">
@@ -26,7 +30,7 @@ export const EntryList: React.FC<EntryListProps> = ({ entries }) => {
         Past Entries
       </h2>
       {entries.map((entry) => (
-        <EntryItem key={entry.id} entry={entry} />
+        <EntryItem key={entry.id} entry={entry} onDeleteEntry={onDeleteEntry} />
       ))}
     </div>
   );
